@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String            @id @default(uuid())
+  name           String
+  email          String            @unique
+  password       String
+  points         Int               @default(0)
+  level          String            @default("Boshlang‘ich")
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  progress       UserProgress[]
+  achievements   UserAchievement[]
+  testResults    TestResult[]
+}
+
+model Rule {
+  id          String   @id @default(uuid())
+  title       String
+  explanation String
+  category    String
+  createdAt   DateTime @default(now())
+}
+
+model Scenario {
+  id          String           @id @default(uuid())
+  category    String
+  description String
+  imageUrl    String?
+  explanation String
+  points      Int              @default(10)
+  createdAt   DateTime         @default(now())
+  options     ScenarioOption[]
+}
+
+model ScenarioOption {
+  id         String   @id @default(uuid())
+  scenarioId String
+  text       String
+  isCorrect  Boolean  @default(false)
+  scenario   Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+}
+
+model Question {
+  id          String           @id @default(uuid())
+  text        String
+  category    String
+  explanation String
+  options     QuestionOption[]
+}
+
+model QuestionOption {
+  id         String   @id @default(uuid())
+  questionId String
+  text       String
+  isCorrect  Boolean  @default(false)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model ChallengeDay {
+  id           String   @id @default(uuid())
+  dayNumber    Int      @unique
+  title        String
+  description  String
+  rewardPoints Int      @default(10)
+}
+
+model UserProgress {
+  id          String   @id @default(uuid())
+  userId      String
+  type        String   // 'SCENARIO', 'TEST', 'CHALLENGE'
+  refId       String   // ID of the scenario, test, or challenge day
+  isCompleted Boolean  @default(true)
+  score       Int      @default(0)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Achievement {
+  id             String            @id @default(uuid())
+  title          String
+  description    String
+  conditionType  String
+  conditionValue Int
+  users          UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(uuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+}
+
+model TestResult {
+  id             String   @id @default(uuid())
+  userId         String
+  score          Int
+  totalQuestions Int
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
