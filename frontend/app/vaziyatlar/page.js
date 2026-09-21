@@ -93,7 +93,7 @@ function ScenariosContent() {
               <span className="text-slate-400 font-medium">Bu yerda vaziyat tasviri bo'ladi</span>
             )}
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight whitespace-pre-line">
             {current.description}
           </h2>
         </div>
