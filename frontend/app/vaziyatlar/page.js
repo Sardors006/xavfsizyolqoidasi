@@ -86,8 +86,12 @@ function ScenariosContent() {
 
       <div className="bg-white rounded-3xl shadow-sm border p-8 md:p-12">
         <div className="mb-8">
-          <div className="h-48 bg-slate-100 rounded-2xl mb-8 flex items-center justify-center border-2 border-dashed border-slate-300">
-            <span className="text-slate-400 font-medium">Bu yerda vaziyat tasviri bo'ladi</span>
+          <div className="h-48 md:h-64 bg-slate-100 rounded-2xl mb-8 flex items-center justify-center overflow-hidden border-2 border-slate-200">
+            {current.imageUrl ? (
+              <img src={current.imageUrl} alt={current.category} className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-slate-400 font-medium">Bu yerda vaziyat tasviri bo'ladi</span>
+            )}
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
             {current.description}

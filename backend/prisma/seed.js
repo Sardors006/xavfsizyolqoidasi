@@ -6,6 +6,13 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database with Uzbek road-safety content...');
 
+  await prisma.achievement.deleteMany();
+  await prisma.rule.deleteMany();
+  await prisma.scenario.deleteMany();
+  await prisma.question.deleteMany();
+  await prisma.challengeDay.deleteMany();
+
+
   // --- ACHIEVEMENTS ---
   const achievements = [
     { title: 'Birinchi test', description: 'Birinchi marta testni muvaffaqiyatli yakunladingiz.', conditionType: 'TESTS_COMPLETED', conditionValue: 1 },
@@ -44,6 +51,7 @@ async function main() {
       category: 'Haydovchi xavfsizligi',
       description: 'Svetofor o‘zgarayotgan paytda (yashil miltillab, sariq yonishni boshlaganda) oldingizdagi vaziyatni ko‘rdingiz. Nima qilasiz?',
       explanation: 'Sariq chiroq ogohlantiruvchi belgi bo‘lib, to‘xtashga tayyorgarlik ko‘rishni talab qiladi. Tezlikni oshirish xavfli va qoidalarga ziddir.',
+      imageUrl: 'https://image.pollinations.ai/prompt/traffic%20light%20turning%20yellow%20at%20intersection%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Tezlikni oshirib chorrahadan o‘tib ketaman', isCorrect: false },
         { text: 'Xavfsiz tarzda tezlikni pasaytirib, to‘xtayman', isCorrect: true },
@@ -54,6 +62,7 @@ async function main() {
       category: 'Piyodalar xavfsizligi',
       description: 'Siz piyodalar o‘tish joyida yo‘lni kesib o‘tmoqchisiz, ammo bitta mashina juda tez yaqinlashmoqda. Nima qilasiz?',
       explanation: 'Garchi sizda ustunlik bo‘lsa ham, mashina to‘liq to‘xtaganiga ishonch hosil qilmasdan yo‘lga chiqish hayotingiz uchun xavfli bo‘lishi mumkin.',
+      imageUrl: 'https://image.pollinations.ai/prompt/pedestrian%20crossing%20crosswalk%20with%20fast%20car%20approaching%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Ustunlik menda deb darhol yo‘lga chiqaman', isCorrect: false },
         { text: 'Mashina to‘liq to‘xtaganiga ishonch hosil qilgandan so‘nggina harakatni boshlayman', isCorrect: true },
@@ -64,6 +73,7 @@ async function main() {
       category: 'Velosiped va samokat xavfsizligi',
       description: 'Siz velosipeddasiz va o‘ng tomonga burilmoqchisiz. Harakatingiz qanday bo‘ladi?',
       explanation: 'Boshqa yo‘l qatnashchilarini o‘z maqsadingizdan ogohlantirish uchun burilish haqida signal (qo‘l ishorasi) berishingiz shart.',
+      imageUrl: 'https://image.pollinations.ai/prompt/bicyclist%20hand%20signaling%20right%20turn%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Hech qanday ishorasiz, birdaniga burilaman', isCorrect: false },
         { text: 'Qo‘lim bilan burilish yo‘nalishini ko‘rsatib, ogohlantirish beraman', isCorrect: true },
@@ -74,6 +84,7 @@ async function main() {
       category: 'Haydovchi xavfsizligi',
       description: 'Yomg‘irli ob-havoda avtomobil boshqaryapsiz. Yo‘l sirti sirpanchiq. Nima qilasiz?',
       explanation: 'Yomg‘irli ob-havoda tormozlanish masofasi uzayadi. Tezlikni kamaytirish va oraliq masofani saqlash eng xavfsiz qarordir.',
+      imageUrl: 'https://image.pollinations.ai/prompt/driving%20car%20on%20wet%20slippery%20road%20in%20rain%20realistic%20point%20of%20view?width=800&height=400&nologo=true',
       options: [
         { text: 'Odatdagi tezlikda harakatlanishda davom etaman', isCorrect: false },
         { text: 'Tezlikni sezilarli darajada kamaytirib, oldindagi mashina bilan masofani oshiraman', isCorrect: true }
@@ -83,6 +94,7 @@ async function main() {
       category: 'Yo‘l belgilari',
       description: 'Yo‘l chetida "To‘xtash taqiqlangan" belgisini ko‘rdingiz, lekin do‘konga bir daqiqaga kirib chiqishingiz kerak. Nima qilasiz?',
       explanation: 'Belgiga qat’iy amal qilish kerak. To‘xtash qoidasini buzish boshqa ishtirokchilarga xalaqit berishi mumkin.',
+      imageUrl: 'https://image.pollinations.ai/prompt/no%20parking%20sign%20on%20street%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Mashinani "avariyka" (ogohlantiruvchi chiroqlar) yoqib qoldiraman', isCorrect: false },
         { text: 'Ruxsat etilgan boshqa joy qidirib, mashinani o‘sha joyga qo‘yaman', isCorrect: true }
@@ -92,6 +104,7 @@ async function main() {
       category: 'Piyodalar xavfsizligi',
       description: 'Tungi vaqtda ko‘cha chetida ketyapsiz. Yo‘lak yo‘q.',
       explanation: 'Piyodalar yo‘lkasi bo‘lmaganda, qorong‘uda nur qaytaruvchi elementlar kiyib, transport harakatiga qarama-qarshi tomondan yurish xavfsiz.',
+      imageUrl: 'https://image.pollinations.ai/prompt/person%20walking%20on%20left%20side%20of%20road%20at%20night%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Mashinalar harakati yo‘nalishi bo‘ylab, o‘ng tomondan yuraman', isCorrect: false },
         { text: 'Mashinalar harakatiga qarama-qarshi tomondan (chapdan) yuraman', isCorrect: true }
@@ -101,6 +114,7 @@ async function main() {
       category: 'Haydovchi xavfsizligi',
       description: 'Siz asosiy yo‘lda ketyapsiz. O‘ng tomondagi ikkilamchi yo‘ldan mashina chiqib kelmoqda. Nima qilasiz?',
       explanation: 'Asosiy yo‘lda bo‘lsangiz ham, xavfsizlik uchun hushyorlikni yo‘qotmaslik va agar u yo‘l bermasa to‘qnashuvni oldini olish muhimdir.',
+      imageUrl: 'https://image.pollinations.ai/prompt/car%20approaching%20intersection%20from%20side%20road%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Faqat o‘z ustunligimni o‘ylab, tezlikni pasaytirmayman', isCorrect: false },
         { text: 'Ustunlik menda bo‘lsa ham, vaziyatni kuzatib ehtiyot chorasini ko‘raman', isCorrect: true }
@@ -110,6 +124,7 @@ async function main() {
       category: 'Velosiped va samokat xavfsizligi',
       description: 'Samokatda piyodalar gavjum bo‘lgan xiyobon orqali o‘tishingiz kerak.',
       explanation: 'Piyodalar yo‘lagida piyodalar ustunlikka ega. Tezlikni pasaytirish yoki samokatni yetaklab o‘tish talab etiladi.',
+      imageUrl: 'https://image.pollinations.ai/prompt/electric%20scooter%20riding%20in%20crowded%20park%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Signal chalib, tezlikni pasaytirmay odamlar orasidan o‘taman', isCorrect: false },
         { text: 'Tezlikni piyodalar tezligigacha pasaytiraman yoki samokatni yetaklab o‘taman', isCorrect: true }
@@ -119,6 +134,7 @@ async function main() {
       category: 'Haydovchi xavfsizligi',
       description: 'Harakat paytida telefoningizga muhim xabar keldi.',
       explanation: 'Rulda telefondan foydalanish eng xavfli odatlardan biridir. Bu sizning e’tiboringizni yo‘ldan chalg‘itadi.',
+      imageUrl: 'https://image.pollinations.ai/prompt/driver%20looking%20at%20phone%20in%20car%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Yo‘lga qarab turib xabarni tezda o‘qib olaman', isCorrect: false },
         { text: 'Avtomobilni xavfsiz joyda to‘xtatgandan so‘ng xabarni o‘qiyman', isCorrect: true }
@@ -128,6 +144,7 @@ async function main() {
       category: 'Svetofor',
       description: 'Chorrahada yashil chiroq yondi, biroq chorraha o‘rtasida tirbandlik tufayli mashinalar turibdi.',
       explanation: 'Chorrahada tiqilinch bo‘lsa, yashil chiroq yongan taqdirda ham chorrahaga kirish taqiqlanadi.',
+      imageUrl: 'https://image.pollinations.ai/prompt/traffic%20jam%20at%20green%20light%20intersection%20realistic?width=800&height=400&nologo=true',
       options: [
         { text: 'Yashil chiroq bo‘lgani uchun darhol chorrahaga kiraman', isCorrect: false },
         { text: 'Chorraha bo‘shamaguncha kutib turaman, chunki kirish taqiqlangan', isCorrect: true },
@@ -142,6 +159,7 @@ async function main() {
         category: sd.category,
         description: sd.description,
         explanation: sd.explanation,
+        imageUrl: sd.imageUrl,
         options: {
           create: sd.options
         }
